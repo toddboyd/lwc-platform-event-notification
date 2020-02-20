@@ -1,10 +1,13 @@
 public with sharing class ClientNotification {
-    public static void SendNotification(String application, String message, ClientNotificationType notificationType) {
+    public static void SendNotification(String application, String title, String message, ClientNotificationType notificationType, Boolean allUsers) {
         ClientNotification__e clientNotification = new ClientNotification__e();
         clientNotification.Application__c = application;
-        clientNotification.User__c = UserInfo.getUserId();
+        clientNotification.Title__c = title;        
         clientNotification.Message__c = message;
         clientNotification.Type__c = getNotificationtype(notificationType);
+        if (!allUsers) {
+            clientNotification.User__c = UserInfo.getUserId();
+        }
         Eventbus.publish(clientNotification);
     }   
 
